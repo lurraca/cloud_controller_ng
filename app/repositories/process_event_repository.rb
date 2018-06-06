@@ -53,7 +53,7 @@ module VCAP::CloudController
         )
       end
 
-      def self.record_scale(process, user_audit_info, request)
+      def self.record_scale(process, user_audit_info, request, manifest_triggered: false)
         Loggregator.emit(process.app.guid, "Scaling process: \"#{process.type}\"")
 
         create_event(
@@ -65,7 +65,8 @@ module VCAP::CloudController
           metadata:       {
             process_guid: process.guid,
             process_type: process.type,
-            request:      request
+            request:      request,
+            manifest_triggered: manifest_triggered
           }
         )
       end

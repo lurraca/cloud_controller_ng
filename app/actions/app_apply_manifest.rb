@@ -27,7 +27,7 @@ module VCAP::CloudController
 
       message.manifest_process_scale_messages.each do |manifest_process_scale_msg|
         process = find_process(app, manifest_process_scale_msg.type)
-        ProcessScale.new(@user_audit_info, process, manifest_process_scale_msg.to_process_scale_message).scale
+        ProcessScale.new(@user_audit_info, process, manifest_process_scale_msg.to_process_scale_message, manifest_triggered: true).scale
       end
 
       app_update_message = message.app_update_message
@@ -39,6 +39,7 @@ module VCAP::CloudController
       AppPatchEnvironmentVariables.new(@user_audit_info).patch(app, message.app_update_environment_variables_message)
 
       create_service_bindings(message.services, app) if message.services.present?
+
       app
     end
 
